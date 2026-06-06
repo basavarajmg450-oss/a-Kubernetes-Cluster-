@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server-deployment
+  namespace: default
+  labels:
+    app: web-server
+    tier: frontend
+spec:
+  # Start with 2 replicas as specified in typical scaling tasks
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: web-server
+  template:
+    metadata:
+      labels:
+        app: web-server
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+          name: http
+        # Production practice: Set resource boundaries
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+        # Probes for checking application health and traffic readiness
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        # Volume mount to load custom HTML from ConfigMap
+        volumeMounts:
+        - name: web-page-volume
+          mountPath: /usr/share/nginx/html
+      # Define volume connected to the ConfigMap
+      volumes:
+      - name: web-page-volume
+        configMap:
+          name: web-page-config

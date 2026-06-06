@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-page-config
+  namespace: default
+  labels:
+    app: web-server
+    tier: frontend
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Kubernetes Demo - DevOps Internship</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #0f172a, #1e1b4b);
+                color: #f8fafc;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+            }
+            .card {
+                background: rgba(30, 41, 59, 0.7);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 16px;
+                padding: 40px;
+                max-width: 600px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                text-align: center;
+                animation: fadeIn 1s ease-out;
+            }
+            h1 {
+                background: linear-gradient(to right, #38bdf8, #818cf8);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                margin-bottom: 20px;
+                font-size: 2.5rem;
+            }
+            p {
+                color: #cbd5e1;
+                font-size: 1.1rem;
+                line-height: 1.6;
+            }
+            .badge {
+                display: inline-block;
+                background: rgba(56, 189, 248, 0.2);
+                border: 1px solid #38bdf8;
+                color: #38bdf8;
+                padding: 6px 16px;
+                border-radius: 9999px;
+                font-size: 0.875rem;
+                font-weight: bold;
+                margin-top: 20px;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="card">
+            <h1>Kubernetes Deployment Successful!</h1>
+            <p>Welcome, Intern! This page is served from an Nginx web server running inside a Kubernetes Pod, using a ConfigMap volume mount.</p>
+            <div class="badge">Status: Running in Pod</div>
+        </div>
+    </body>
+    </html>
